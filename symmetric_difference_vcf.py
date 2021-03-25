@@ -9,10 +9,11 @@ filename = sys.argv[1]
 def read_vcf(filename):
     with open(filename, 'r') as f:
         lines = [line for line in f if not line.startswith('##')]
-        dataframe = pd.read_csv(
+         dataframe = pd.read_csv(
             io.StringIO(''.join(lines)),sep='\t').drop(
-            ['#CHROM', 'POS','ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'], axis=1)
-    return dataframe
+            ['#CHROM', 'POS','ID', 'REF', 'ALT', 'QUAL', 'INFO', 'FORMAT'], axis=1)
+        df_filtered  = dataframe[dataframe["FILTER"] == "PASS"].drop('FILTER',axis=1)
+    return df_filtered
 
 def symmetric_difference_pd(x, column1, column2):
     # compare the two columns and make an array with boolean values )
